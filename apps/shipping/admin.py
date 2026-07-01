@@ -17,7 +17,9 @@ class ShippingMethodAdmin(admin.ModelAdmin):
         "is_active",
     )
 
-
+    search_fields = (
+        "name",
+    )
 @admin.register(Shipment)
 class ShipmentAdmin(admin.ModelAdmin):
     list_display = (
