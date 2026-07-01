@@ -6,6 +6,11 @@ from apps.accounts.validators import NormalizerPhone
 
 class LoginSerializer(serializers.Serializer):
     identifier = serializers.CharField(max_length=255)
+    password = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        write_only=True,
+    )
 
     def validate_identifier(self, value):
         value = value.strip()
@@ -28,4 +33,6 @@ class LoginSerializer(serializers.Serializer):
         except Exception:
             pass
 
-        raise serializers.ValidationError("Enter a valid email or phone number.")
+        raise serializers.ValidationError(
+            "Enter a valid email or phone number."
+        )

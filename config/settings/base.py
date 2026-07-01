@@ -77,6 +77,9 @@ TEMPLATES = [
 db_config = dj_database_url.config(default=config("DATABASE_URL"))
 DATABASES = {"default": db_config}
 
+AUTHENTICATION_BACKENDS = [
+    "apps.accounts.backends.EmailOrPhoneBackend",
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {

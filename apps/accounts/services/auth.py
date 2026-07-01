@@ -1,9 +1,12 @@
+from django.contrib.auth import authenticate
+
 from ..models import User
 
+from .jwt import JWTService
 
 class AuthService:
     @staticmethod
-    def login(identifier: dict) -> dict:
+    def login(identifier: dict, password: str | None = None) -> dict:
         value = identifier["value"]
         identifier_type = identifier["type"]
 
@@ -14,10 +17,26 @@ class AuthService:
                 return {
                     "status": "USER_NOT_FOUND",
                 }
+            
+            if password is None:
+                return {
+                    "status": "PASSWORD_REQUIRED",
+                    "user_id": user.id,
+                }
 
+            user_login = authenticate(
+                identifier=value,
+                password=password,
+            )
+
+            if user_login is None:
+                return {
+                    "status": "INVALID_CREDENTIALS",
+                }
+            tokens = JWTService.create_tokens(user_login)
             return {
-                "status": "PASSWORD_REQUIRED",
-                "user_id": user.id,
+                "status": "SUCCESS",
+                **tokens,
             }
 
         user = User.objects.filter(phone=value).first()
