@@ -1,11 +1,14 @@
-from .attribute import Attribute
-from .attribute_value import AttributeValue
-from .brand import Brand
-from .category import Category
-
+from .attribute import AttributeAdmin
+from .attribute_value import AttributeValueAdmin
+from .brand import BrandAdmin
+from .category import CategoryAdmin
+from .product import ProductAdmin
+from .product_variant import ProductVariantAdmin
 __all__ = [
-    "Attribute",
-    "AttributeValue",
-    "Brand",
-    "Category",
+    "AttributeAdmin",
+    "AttributeValueAdmin",
+    "BrandAdmin",
+    "CategoryAdmin",
+    "ProductAdmin",
+    "ProductVariantAdmin",
 ]
