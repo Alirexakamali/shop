@@ -12,7 +12,7 @@ class UserDiscount(BaseModel):
     )
 
     discount = models.ForeignKey(
-        "discount.Discount",
+        "discounts.Discount",
         on_delete=models.CASCADE,
         related_name="users",
         verbose_name=_("Discount"),

@@ -7,7 +7,7 @@ from common.models.base import BaseModel
 
 class OrderItem(BaseModel):
     order = models.ForeignKey(
-        "order.Order",
+        "orders.Order",
         on_delete=models.CASCADE,
         related_name="items",
         verbose_name=_("Order"),
