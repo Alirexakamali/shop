@@ -1,7 +1,7 @@
 from django.core.validators import validate_email
 from rest_framework import serializers
 
-from apps.accounts.validators import validate_phone_number
+from apps.accounts.validators import NormalizerPhone
 
 
 class LoginSerializer(serializers.Serializer):
@@ -20,7 +20,7 @@ class LoginSerializer(serializers.Serializer):
             pass
 
         try:
-            validate_phone_number(value)
+            NormalizerPhone.normalize_phone(value)
             return {
                 "type": "phone",
                 "value": value,
@@ -28,6 +28,4 @@ class LoginSerializer(serializers.Serializer):
         except Exception:
             pass
 
-        raise serializers.ValidationError(
-            "Enter a valid email or phone number."
-        )
+        raise serializers.ValidationError("Enter a valid email or phone number.")
