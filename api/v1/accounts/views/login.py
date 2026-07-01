@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 
 from apps.accounts.services.auth import AuthService
 
-from .serializers import LoginSerializer
+from ..serializers import LoginSerializer
 
 
 class LoginView(APIView):
