@@ -32,6 +32,7 @@ LOCAL_APPS = [
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     # "corsheaders",
@@ -79,6 +80,7 @@ DATABASES = {"default": db_config}
 
 AUTHENTICATION_BACKENDS = [
     "apps.accounts.backends.EmailOrPhoneBackend",
+    # "django.contrib.auth.backends.ModelBackend", # NOTE : Because `ModelBackend` includes many of Django's default features (such as the `user_can_authenticate` check).
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -114,7 +116,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-# JWT 
+# JWT
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),

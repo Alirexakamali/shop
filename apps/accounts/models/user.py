@@ -66,8 +66,8 @@ class User(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = "phone"
-    # USERNAME_FIELD = "email"
+    # USERNAME_FIELD = "phone"
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     class Meta:

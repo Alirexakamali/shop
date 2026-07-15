@@ -14,4 +14,8 @@ urlpatterns = [
         PasswordLoginView.as_view(),
         name="password-login",
     ),
+    # path(
+    #     "register/",
+        
+    # )
 ]

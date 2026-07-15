@@ -8,12 +8,12 @@ class EmailOrPhoneBackend(BaseBackend):
         self,
         request,
         identifier=None,
+        username=None,
         password=None,
         **kwargs,
     ):
+        identifier = identifier or username
 
-        print(identifier)
-        print(password)
         if not identifier or not password:
             return None
 
