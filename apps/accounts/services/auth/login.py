@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate
 
-from ..models import User
+from ...models import User
 
 from .jwt import JWTService
+from ...enums.login import LoginStatus
 
-class AuthService:
+
+class LoginService:
     @staticmethod
     def login(identifier: dict, password: str | None = None) -> dict:
         value = identifier["value"]
@@ -15,13 +17,12 @@ class AuthService:
 
             if not user:
                 return {
-                    "status": "USER_NOT_FOUND",
+                    "status": LoginStatus.USER_NOT_FOUND,
                 }
-            
+
             if password is None:
                 return {
-                    "status": "PASSWORD_REQUIRED",
-                    "user_id": user.id,
+                    "status": LoginStatus.PASSWORD_REQUIRED,
                 }
 
             user_login = authenticate(
@@ -31,11 +32,11 @@ class AuthService:
 
             if user_login is None:
                 return {
-                    "status": "INVALID_CREDENTIALS",
+                    "status": LoginStatus.INVALID_CREDENTIALS,
                 }
             tokens = JWTService.create_tokens(user_login)
             return {
-                "status": "SUCCESS",
+                "status": LoginStatus.INVALID_CREDENTIALS,
                 **tokens,
             }
 
@@ -43,10 +44,10 @@ class AuthService:
 
         if user:
             return {
-                "status": "SEND_OTP",
+                "status": LoginStatus.SEND_OTP,
                 "user_id": user.id,
             }
 
         return {
-            "status": "REGISTER_WITH_OTP",
+            "status": LoginStatus.REGISTER_WITH_OTP,
         }
