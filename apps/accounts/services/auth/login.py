@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 
 from ...models import User
 
-from .jwt import JWTService
+from ...authentication.jwt import JWT
 from ...enums.login import LoginStatus
 
 
@@ -34,9 +34,9 @@ class LoginService:
                 return {
                     "status": LoginStatus.INVALID_CREDENTIALS,
                 }
-            tokens = JWTService.create_tokens(user_login)
+            tokens = JWT.create_tokens(user_login)
             return {
-                "status": LoginStatus.INVALID_CREDENTIALS,
+                "status": LoginStatus.SUCCESS,
                 **tokens,
             }
 

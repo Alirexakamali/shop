@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..serializers import PasswordLoginSerializer
-from apps.accounts.services.auth.jwt import JWTService
+from apps.accounts.authentication.jwt import JWTService
 
 
 class PasswordLoginView(APIView):
