@@ -1,7 +1,7 @@
 from django.core.validators import validate_email
 from rest_framework import serializers
 
-from apps.accounts.validators import NormalizerPhone
+from apps.accounts.normalizers import NormalizerPhone
 
 
 class LoginSerializer(serializers.Serializer):

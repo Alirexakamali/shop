@@ -1,6 +1,6 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
-from .validators.phone import NormalizerPhone
+from .normalizers.phone import NormalizerPhone
 
 
 class UserManager(BaseUserManager):
