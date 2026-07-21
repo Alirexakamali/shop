@@ -1,9 +1,6 @@
-from dataclasses import dataclass
+from .register import RegisterDTO, VerifyRegistrationDTO
 
-
-@dataclass(slots=True)
-class RegisterDTO:
-    email: str
-    first_name: str
-    last_name: str
-    password: str
+__all__ = [
+    "RegisterDTO",
+    "VerifyRegistrationDTO",
+]

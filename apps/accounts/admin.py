@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from .models import Address, User
+from .models import Address, User, PendingRegistration
 
 
 class AddressInline(admin.TabularInline):
@@ -130,12 +130,13 @@ class AddressAdmin(admin.ModelAdmin):
         "postal_code",
     )
 
-    autocomplete_fields = (
-        "user",
-    )
+    autocomplete_fields = ("user",)
 
     list_per_page = 25
 
-    ordering = (
-        "-created_at",
-    )
+    ordering = ("-created_at",)
+
+
+@admin.register(PendingRegistration)
+class PendingRegistrationAdmin(admin.ModelAdmin):
+    list_display = ("email",)

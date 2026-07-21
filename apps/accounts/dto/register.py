@@ -7,3 +7,8 @@ class RegisterDTO:
     last_name: str
     email: str = field(converter=lambda value: value.strip().lower())
     password: str
+    
+@define(frozen=True, slots=True)
+class VerifyRegistrationDTO:
+    email: str = field(converter=str.lower)
+    otp: str

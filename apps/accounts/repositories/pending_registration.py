@@ -1,5 +1,3 @@
-from django.utils import timezone
-
 from ..models import PendingRegistration
 
 
@@ -55,5 +53,24 @@ class PendingRegistrationRepository:
         return pending
 
     @staticmethod
-    def delete(*, pending: PendingRegistration) -> None:
+    def increment_attempts(
+        *,
+        pending: PendingRegistration,
+    ) -> PendingRegistration:
+        pending.attempts += 1
+
+        pending.save(
+            update_fields=[
+                "attempts",
+                "updated_at",
+            ]
+        )
+
+        return pending
+
+    @staticmethod
+    def delete(
+        *,
+        pending: PendingRegistration,
+    ) -> None:
         pending.delete()

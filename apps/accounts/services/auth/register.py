@@ -1,14 +1,22 @@
+from datetime import timedelta
+
 from django.contrib.auth.hashers import make_password
+from django.utils import timezone
 
 from ...dto.register import RegisterDTO
 from ...enums.register import RegisterStatus
-from ...selectors import PendingRegistrationSelector, UserSelector
-from ...services.auth.otp import OTPService
+from ...repositories.pending_registration import PendingRegistrationRepository
+from ...selectors.pending_registration import PendingRegistrationSelector
+from ...selectors.user import UserSelector
+from ..email.sender import EmailService
+from .otp import OTPService
 
 
 class RegisterService:
-    @staticmethod
-    def register(*, data: RegisterDTO) -> RegisterStatus:
+    OTP_EXPIRE_MINUTES = 2
+
+    @classmethod
+    def register(cls, *, data: RegisterDTO) -> RegisterStatus:
         if UserSelector.exists_by_email(email=data.email):
             return RegisterStatus.USER_ALREADY_EXISTS
 
@@ -18,14 +26,34 @@ class RegisterService:
 
         otp = OTPService.generate()
 
+        expires_at = timezone.now() + timedelta(
+            minutes=cls.OTP_EXPIRE_MINUTES,
+        )
+
         hashed_password = make_password(data.password)
 
         if pending:
-            # update pending registration
-            ...
-
+            PendingRegistrationRepository.update(
+                pending=pending,
+                first_name=data.first_name,
+                last_name=data.last_name,
+                password=hashed_password,
+                otp_code=otp,
+                expires_at=expires_at,
+            )
         else:
-            # create pending registration
-            ...
+            PendingRegistrationRepository.create(
+                email=data.email,
+                first_name=data.first_name,
+                last_name=data.last_name,
+                password=hashed_password,
+                otp_code=otp,
+                expires_at=expires_at,
+            )
 
-        return {"status": RegisterStatus.OTP_SENT}
+        EmailService.send_verification_code(
+            email=data.email,
+            otp=otp,
+        )
+
+        return RegisterStatus.OTP_SENT
