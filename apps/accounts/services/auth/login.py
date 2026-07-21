@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate
 
-from ...models import User
 
 from ...authentication.jwt import JWT
 from ...enums.login import LoginStatus
+
+from ...selectors import UserSelector
 
 
 class LoginService:
@@ -12,8 +13,11 @@ class LoginService:
         value = identifier["value"]
         identifier_type = identifier["type"]
 
-        if identifier_type == "email":
-            user = User.objects.filter(email=value).first()
+        if identifier_type == "email" or identifier_type == "phone":
+            user = (
+                UserSelector.get_by_email(email=value)
+                or UserSelector.get_by_phone(phone=value)
+            )
 
             if not user:
                 return {
@@ -40,14 +44,14 @@ class LoginService:
                 **tokens,
             }
 
-        user = User.objects.filter(phone=value).first()
+        # user = User.objects.filter(phone=value).first()
 
-        if user:
-            return {
-                "status": LoginStatus.SEND_OTP,
-                "user_id": user.id,
-            }
+        # if user:
+        #     return {
+        #         "status": LoginStatus.SEND_OTP,
+        #         "user_id": user.id,
+        #     }
 
-        return {
-            "status": LoginStatus.REGISTER_WITH_OTP,
-        }
+        # return {
+        #     "status": LoginStatus.REGISTER_WITH_OTP,
+        # }
