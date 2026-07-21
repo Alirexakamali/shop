@@ -1,0 +1,1 @@
+from .pending_registration import PendingRegistrationRepository
