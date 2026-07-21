@@ -1,0 +1,15 @@
+from enum import StrEnum
+
+
+class RegisterStatus(StrEnum):
+    SUCCESS = "SUCCESS"
+
+    USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS"
+
+    OTP_SENT = "OTP_SENT"
+
+    INVALID_OTP = "INVALID_OTP"
+
+    OTP_EXPIRED = "OTP_EXPIRED"
+
+    TOO_MANY_ATTEMPTS = "TOO_MANY_ATTEMPTS"
