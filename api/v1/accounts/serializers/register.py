@@ -1,6 +1,9 @@
 from rest_framework import serializers
 
-from apps.accounts.dto.register import RegisterDTO
+from apps.accounts.dto.register import RegisterDTO, VerifyRegistrationDTO
+from apps.accounts.services.auth.verify_registration import (
+    VerifyRegistrationService,
+)
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -18,4 +21,18 @@ class RegisterSerializer(serializers.Serializer):
             last_name=self.validated_data["last_name"],
             email=self.validated_data["email"],
             password=self.validated_data["password"],
+        )
+
+
+class VerifyRegistrationSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    otp = serializers.CharField(
+        max_length=6,
+    )
+
+    def to_dto(self) -> VerifyRegistrationDTO:
+        return VerifyRegistrationDTO(
+            email=self.validated_data["email"],
+            otp=self.validated_data["otp"],
         )
