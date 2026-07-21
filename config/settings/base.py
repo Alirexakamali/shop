@@ -79,7 +79,7 @@ db_config = dj_database_url.config(default=config("DATABASE_URL"))
 DATABASES = {"default": db_config}
 
 AUTHENTICATION_BACKENDS = [
-    "apps.accounts.backends.EmailOrPhoneBackend",
+    "apps.accounts.authentication.backends.EmailOrPhoneBackend",
     # "django.contrib.auth.backends.ModelBackend", # NOTE : Because `ModelBackend` includes many of Django's default features (such as the `user_can_authenticate` check).
 ]
 
