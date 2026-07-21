@@ -1,7 +1,6 @@
 from django.urls import path
 
-from .views.login import LoginView
-from .views.password import PasswordLoginView
+from .views import LoginView , RegisterView
 
 urlpatterns = [
     path(
@@ -9,13 +8,17 @@ urlpatterns = [
         LoginView.as_view(),
         name="login",
     ),
+    # path(
+    #     "password-login/",
+    #     PasswordLoginView.as_view(),
+    #     name="password-login",
+    # ),
     path(
-        "password-login/",
-        PasswordLoginView.as_view(),
-        name="password-login",
+        "register/",
+        RegisterView.as_view(),
+        name="register"
     ),
     # path(
-    #     "register/",
-        
-    # )
+    #     "verify-email/",
+    # ),
 ]
