@@ -79,7 +79,7 @@ db_config = dj_database_url.config(default=config("DATABASE_URL"))
 DATABASES = {"default": db_config}
 
 AUTHENTICATION_BACKENDS = [
-    "apps.accounts.backends.EmailOrPhoneBackend",
+    "apps.accounts.authentication.backends.EmailOrPhoneBackend",
     # "django.contrib.auth.backends.ModelBackend", # NOTE : Because `ModelBackend` includes many of Django's default features (such as the `user_can_authenticate` check).
 ]
 
@@ -123,3 +123,15 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
+
+# send email  
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

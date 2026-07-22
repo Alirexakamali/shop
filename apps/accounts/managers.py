@@ -1,29 +1,23 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
-from .normalizers.phone import NormalizerPhone
 
 
 class UserManager(BaseUserManager):
-    """
-    Custom manager for the User model.
-    """
-
     use_in_migrations = True
 
-    def create_user(self, phone, password=None, email=None, **extra_fields):
-        """
-        Create and save a regular user.
-        """
-        if not phone:
-            raise ValueError(_("Phone number is required."))
+    def create_user(
+        self,
+        *,
+        email: str,
+        password: str | None = None,
+        **extra_fields,
+    ):
+        if not email:
+            raise ValueError(_("Email is required."))
 
-        phone = NormalizerPhone.normalize_phone(phone)
-
-        if email:
-            email = self.normalize_email(email)
+        email = self.normalize_email(email)
 
         user = self.model(
-            phone=phone,
             email=email,
             **extra_fields,
         )
@@ -33,23 +27,19 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, phone, password, email=None, **extra_fields):
-        """
-        Create and save a superuser.
-        """
+    def create_superuser(
+        self,
+        *,
+        email: str,
+        password: str,
+        **extra_fields,
+    ):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
 
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError(_("Superuser must have is_staff=True."))
-
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError(_("Superuser must have is_superuser=True."))
-
         return self.create_user(
-            phone=phone,
-            password=password,
             email=email,
+            password=password,
             **extra_fields,
         )

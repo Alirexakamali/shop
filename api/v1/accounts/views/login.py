@@ -20,4 +20,4 @@ class LoginView(APIView):
             password=serializer.validated_data.get("password") or None,
         )
 
-        return Response(result, status=status.HTTP_200_OK)
+        return Response({"status": result}, status=status.HTTP_200_OK)

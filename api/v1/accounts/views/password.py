@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..serializers import PasswordLoginSerializer
-from apps.accounts.authentication.jwt import JWTService
+from apps.accounts.authentication.jwt import JWT
 
 
 class PasswordLoginView(APIView):
@@ -13,7 +13,7 @@ class PasswordLoginView(APIView):
         serializer = PasswordLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        tokens = JWTService.create_tokens(
+        tokens = JWT.create_tokens(
             serializer.validated_data["user"]
         )
 
