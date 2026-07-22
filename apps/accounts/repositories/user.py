@@ -16,3 +16,19 @@ class UserRepository:
             first_name=first_name,
             last_name=last_name,
         )
+
+    @staticmethod
+    def change_password(
+        *,
+        user: User,
+        password: str,
+    ) -> User:
+        user.set_password(password)
+
+        user.save(
+            update_fields=[
+                "password",
+            ]
+        )
+
+        return user
