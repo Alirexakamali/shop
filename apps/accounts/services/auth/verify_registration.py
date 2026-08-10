@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.db import transaction
 
 from ...authentication.jwt import JWT
 from ...dto import VerifyRegistrationDTO
@@ -16,6 +17,7 @@ class VerifyRegistrationService:
     MAX_ATTEMPTS = 5
 
     @classmethod
+    @transaction.atomic
     def verify(
         cls,
         *,
@@ -29,6 +31,10 @@ class VerifyRegistrationService:
             return VerifyRegistrationStatus.PENDING_REGISTRATION_NOT_FOUND
 
         if pending.expires_at <= timezone.now():
+            # NOTE : 
+            # A better solution is to come and just return for now and then write a task that will come and delete all the ones that expire every 10 minutes,
+            # for example.
+            # This will reduce the pressure and improve your performance.
             PendingRegistrationRepository.delete(
                 pending=pending,
             )
@@ -61,4 +67,4 @@ class VerifyRegistrationService:
         )
         tokens = JWT.create_tokens(user)
 
-        return (VerifyRegistrationStatus.SUCCESS,{**tokens})
+        return (VerifyRegistrationStatus.SUCCESS, {**tokens})

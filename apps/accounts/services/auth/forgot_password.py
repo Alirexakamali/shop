@@ -8,7 +8,8 @@ from ...repositories import PasswordResetRepository, UserRepository
 from ...selectors import PasswordResetSelector, UserSelector
 
 
-from ..email.sender import EmailService
+# from ..email.sender import EmailService
+from ...tasks import send_register_otp
 from .otp import OTPService
 
 
@@ -50,8 +51,13 @@ class ForgotPasswordService:
                 otp_code=otp,
                 expires_at=expires_at,
             )
-
-        EmailService.send_verification_code(
+        # NOTE : To avoid problems on a scale of 50,000 or more, we document the email with Celery.
+        # EmailService.send_verification_code(
+        #     email=user.email,
+        #     otp=otp,
+        # )
+        
+        send_register_otp.delay(
             email=user.email,
             otp=otp,
         )
